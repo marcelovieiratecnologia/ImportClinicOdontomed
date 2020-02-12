@@ -1,6 +1,8 @@
 #!/usr/bin/python
 import psycopg2
+import csv
 from config import config
+
 
 
 def connect():
