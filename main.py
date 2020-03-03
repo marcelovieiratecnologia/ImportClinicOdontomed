@@ -1,15 +1,17 @@
 #!/usr/bin/python
 import psycopg2
 import csv
-from config import config
-from lendoCSV import lerArq
-
+from ImportClinicOdontomed.config import config, connect
+from ImportClinicOdontomed.lendoCSV import lerArq
+from ImportClinicOdontomed.import_tb_om_entrada_saida import insertPostgres_tb_om_entrada_saida
+from ImportClinicOdontomed.import_tb_om_profissionais import profExisteNoPostGreSql
 # arquivo = 'clinica.csv'
 # linhas = lerArq(arquivo)
 # print(linhas[:][:]) # Todas as Linhas e Colunas do arquivo
 
 # Variáveis Globais
-linhas = []
+listlinhas = []
+# arq201907 = '201907_PlanilhaCaixaOdontoMed.csv'
 
 
 ''' Layout do Arquivo:
@@ -25,53 +27,34 @@ linhas = []
 ====================================================================================================================================================                                    
 '''
 
-def connect():
-    """ Connect to the PostgreSQL database server """
-    conn = None
-    try:
-        # Ler os parametros de conexão
-        params = config()
-        # conecta no PostGreSQL Server
-        # print('Connecting to the PostgreSQL database...')
-        conn = psycopg2.connect(**params)
-        # Cria um cursor
-        # cur = conn.cursor() Irei criar o cursor apenas na minha função
-        # @@@@@@ Não estou usando essas instruções abaixo @@@@@@@@
-        # # Executa uma Declaração
-        # print('PostgreSQL database version:')
-        # cur.execute('SELECT version()')
-        # # display the PostgreSQL database server version
-        # db_version = cur.fetchone()
-        # print(db_version)
-        # # close the communication with the PostgreSQL
-        # cur.close()
-        # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-    # finally:
-    #     if conn is not None:
-    #         conn.close()
-    #         print('Conexão Finalizada/Fechada.')
-    return conn
-
-def testeConectaPostGres_ExecutaSql():
-    # print(connect())
-    conectar = connect()
-    cur = conectar.cursor()
-    sql = "Select * from tb_om_entrada_saida;"
-    cur.execute(sql)
-    resultado = cur.fetchall()
-    print(resultado)
-
-def insertPostgres_tb_om_entrada_saida():
-    conectar = connect()
-    cursor = conectar.cursor()
-    # sqlInsert = 'Insert into tb_om_cidades (id, nome_cidade, uf) values (%s,%s,%s);'
-    # value = (99, 'CIDADE', 'GG')
-    sqlInsert = "INSERT INTO tb_om_entrada_saida () values()"
-    cursor.execute(sqlInsert, value)
-    conectar.commit()
-
+# def connect():
+#     """ Connect to the PostgreSQL database server """
+#     conn = None
+#     try:
+#         # Ler os parametros de conexão
+#         params = config()
+#         # conecta no PostGreSQL Server
+#         # print('Connecting to the PostgreSQL database...')
+#         conn = psycopg2.connect(**params)
+#         # Cria um cursor
+#         # cur = conn.cursor() Irei criar o cursor apenas na minha função
+#         # @@@@@@ Não estou usando essas instruções abaixo @@@@@@@@
+#         # # Executa uma Declaração
+#         # print('PostgreSQL database version:')
+#         # cur.execute('SELECT version()')
+#         # # display the PostgreSQL database server version
+#         # db_version = cur.fetchone()
+#         # print(db_version)
+#         # # close the communication with the PostgreSQL
+#         # cur.close()
+#         # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#     except (Exception, psycopg2.DatabaseError) as error:
+#         print(error)
+#     # finally:
+#     #     if conn is not None:
+#     #         conn.close()
+#     #         print('Conexão Finalizada/Fechada.')
+#     return conn
 
 # def sql():
 #     #conn = None
@@ -90,20 +73,32 @@ def insertPostgres_tb_om_entrada_saida():
 #     for row in rows:
 #         print(row[:])
 
+def testeConectaPostGres_ExecutaSql():
+    # print(connect())
+    conectar = connect()
+    cur = conectar.cursor()
+    sql = "Select * from tb_om_entrada_saida;"
+    cur.execute(sql)
+    resultado = cur.fetchall()
+    print(resultado)
+
 
 
 if __name__ == '__main__':
-    # testeConectaPostGres_ExecutaSql()
+    pass
+    # listlinhas = lerArq() # retorna uma lista com as linhas do arquivo .csv
 
-    arquivo = 'clinica.csv'
-    # linhas var global
-    linhas = lerArq(arquivo)
     # print(linhas[0][0])
-    # print(linhas[0])
-    # sql()
-    # connect()
-    #insert()
-    insertPostgres_tb_om_entrada_saida()
+    # print(listlinhas[0])
+    # for l in listlinhas:
+    #     print(l)
 
+    # insertPostgres_tb_om_entrada_saida()
+    # testeConectaPostGres_ExecutaSql()
+    # insertPostgres_tb_om_entrada_saida()
 
+    # if profExisteNoPostGreSql('tatiana') == True:
+    #     print('True')
+    # else:
+    #     print('False')
 

@@ -17,10 +17,12 @@ import csv
 # lerArq(arquivo)
 
 # usando o csv
-row = []
-# arquivo = 'clinica.csv'
-def lerArq(arquivo):
-    with open(arquivo, encoding='latin-1') as csvfile:
+
+row = [] # guardando em uma lista
+arq201907 = '201907_PlanilhaCaixaOdontoMed.csv'
+
+def lerArq():
+    with open(arq201907, encoding='latin-1') as csvfile:
         readCSV = csv.reader(csvfile,delimiter=';')
         # print(readCSV)
         for rows in readCSV:
@@ -30,3 +32,4 @@ def lerArq(arquivo):
 
 # l = lerArq(arquivo)
 # print(l[0][0])
+# lerArq(arq201907)
